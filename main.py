@@ -1,3 +1,5 @@
-import battlefield, robot, dinosaur
+import battlefield
 
-game_battlefield = battlefield.Battlefield()
+
+game = battlefield.Battlefield()
+game.run_game()

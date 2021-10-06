@@ -31,7 +31,7 @@ Includes a class for each of the following:
 
 Instantiates three Robot objects and three Dinosaur objects
 
-Robot objects stored in a Fleet and the created Dinosaur objects to be stored in a Herd (the Fleet and Herd use a List to store the objects)
+Robot objects are stored in a Fleet and the Dinosaur objects are stored in a Herd (the Fleet and Herd use a List to store the objects)
 
 Robot can attack a Dinosaur and a Dinosaur can attack a Robot on a Battlefield
 
