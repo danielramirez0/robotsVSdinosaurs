@@ -3,15 +3,19 @@ class Robot:
         self.name = name
         self.hp = 100
         self.weapon = 'None'
-    def attack(self, dinosaur):
+    def attack_dinosaur(self, dinosaur):
+        dinosaur.hp = dinosaur.hp - int(self.weapon.attack_power)
+        print(f"\n{self.name} attacking {dinosaur} with {self.attack}")
+        if (dinosaur.hp <= 0):
+            print(f"\n{dinosaur.name} has been destroyed!")
         #TODO
         print(f"{self.name} attacked {dinosaur}")
     def select_weapon(self, weapons: list):
-        i = 0
+        i = 1
         print("Weapons")
         for weapon in weapons:
-            print(f"{i + 1}: {weapon.name}")
+            print(f"{i}: {weapon.name}")
             i += 1
-        selected_weapon = input("Select a weapon #: ")
-        self.weapon = selected_weapon
+        selected_weapon = int(input("Select a weapon #: ")) - 1
+        self.weapon = weapons[selected_weapon]
         print(f"{weapon} selected")
