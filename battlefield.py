@@ -31,8 +31,8 @@ class Battlefield:
 
         gaming = True
 
-        while(gaming):
-            self.battle()
+        while(gaming == True):
+            self.battle(weapons)
             if (len(self.herd.dinosaurs) == 0):
                 self.display_winners('Robots')
                 gaming = False
@@ -49,32 +49,34 @@ class Battlefield:
         for dino in self.herd.dinosaurs:
             print(f"{dino.name}")
 
-    def battle(self):
+    def battle(self, weapons):
         for dino in self.herd.dinosaurs:
             self.dino_turn(dino)
         for robo in self.fleet.robots:
-            self.robot_turn(robo)
+            self.robot_turn(robo, weapons)
 
     def dino_turn(self, dinosaur):
-        if dinosaur.hp > 0:
+        if len(self.fleet.robots) > 0:
             print(f"\nIt's the {dinosaur.name}'s turn")
             self.show_robo_opponent_options()
-            target = int(input('Choose target # : ')) - 1
+            target = int(input('\nChoose target # : ')) - 1
             robo = self.fleet.robots[target]
             dinosaur.attack_robot(robo)
-        else:
-            self.herd.dinosaurs.remove(dinosaur)
+            if robo.hp <= 0:
+                self.fleet.robots.remove(robo)
 
-    def robot_turn(self, robot):
-        # INPROGRESS
-        if robot.hp > 0:
+    def robot_turn(self, robot, weapons):
+        if len(self.herd.dinosaurs) > 0:
             print(f"\nIt's {robot.name}'s turn")
+            action = int(input("Select an action:\n1: Change weapon\n2: Attack\nEnter #: "))
+            if action == 1:
+                robot.select_weapon(weapons)
             self.show_dino_opponent_options()
-            target = int(input('Choose target # : ')) - 1
+            target = int(input('\nChoose target # : ')) - 1
             dino = self.herd.dinosaurs[target]
             robot.attack_dinosaur(dino)
-        else:
-            self.fleet.robots.remove(robot)
+            if dino.hp <= 0:
+                self.herd.dinosaurs.remove(dino)
 
     def show_dino_opponent_options(self):
         print("\nThese are the available opponents to attack:")
@@ -90,6 +92,8 @@ class Battlefield:
             print(f"{i}: {robot.name}")
             i += 1
 
-    def display_winners(self):
-        if(winner == "Dinosaurs"):
-            print("Dino!")
+    def display_winners(self, winner):
+        if winner == "Dinosaurs":
+            print("Dino VICTORY!")
+        else:
+            print("Robo VICTORY!")
