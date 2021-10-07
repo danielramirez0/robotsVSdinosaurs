@@ -13,8 +13,10 @@ class Robot:
         i = 1
         print("\nAvailable Weapons:")
         for weapon in weapons:
-            print(f"{i}: {weapon.name}")
+            if weapon.is_equipped == False:
+                print(f"{i}: {weapon.name}")
             i += 1
         selected_weapon = int(input("Select a weapon #: ")) - 1
         self.weapon = weapons[selected_weapon]
+        self.weapon.is_equipped = True
         print(f"\n{self.weapon.name} selected")
