@@ -41,11 +41,12 @@ class Battlefield:
         gatling_gun = weapon.Weapon("Gatling Gun", 70)
         laser_rifle = weapon.Weapon("Laser Rifle", 50)
         pistol = weapon.Weapon("Pistol", 10)
-        self.weapons = [gatling_gun, laser_rifle, pistol]
+        fists = weapon.Weapon("Fists", 5)
+        self.weapons = [gatling_gun, laser_rifle, pistol, fists]
 
-        t_1000 = robot.Robot("T-1000")
-        t_800 = robot.Robot("T-800")
-        t_101 = robot.Robot("T-101")
+        t_1000 = robot.Robot("T-1000", self.weapons[3])
+        t_800 = robot.Robot("T-800", self.weapons[3])
+        t_101 = robot.Robot("T-101", self.weapons[3])
 
         t_rex = dinosaur.Dinosaur("T-Rex", 50)
         raptor = dinosaur.Dinosaur("Raptor", 30)
@@ -98,6 +99,7 @@ class Battlefield:
         i = 0
         for attacker in team:
             print(f"{i+1}: {attacker.name}")
+            i += 1
         chosen = self.prompt_input("# ", self.number_between, 1, len(team))
         return team[int(chosen) - 1]
 
@@ -110,15 +112,18 @@ class Battlefield:
                 self.player_turn(player)
 
     def player_turn(self, player):
+        self.clear()
         print(f"It's {player}'s turn")
-        team = self.fleet.robots if self.get_team(player) == "Robots" else self.herd.dinosaurs
+        team = self.fleet.robots if self.get_team(
+            player) == "Robots" else self.herd.dinosaurs
         attacker = self.select_attacker(team)
-        print(f"{attacker.name}")
-        input()
+        if self.get_team(player) == "Robots":
+            self.robot_turn(attacker)
+        else:
+            self.dino_turn(attacker)
 
     def computer_turn(self):
-            print("It's the computer's turn")
-
+        print("It's the computer's turn")
 
     def get_team(self, player):
         if player == "P1":
@@ -131,8 +136,9 @@ class Battlefield:
         if len(self.fleet.robots) > 0:
             print(f"\nIt's the {dinosaur.name}'s turn")
             self.show_robo_opponent_options()
-            target = int(input('\nChoose target # : ')) - 1
-            robo = self.fleet.robots[target]
+            target = self.prompt_input(
+                '\nChoose target # : ', self.number_between, 1, len(self.fleet.robots))
+            robo = self.fleet.robots[int(target) - 1]
             dinosaur.attack_robot(robo)
             if robo.hp <= 0:
                 self.fleet.robots.remove(robo)
@@ -142,13 +148,15 @@ class Battlefield:
         self.clear()
         if len(self.herd.dinosaurs) > 0:
             print(f"\nIt's {robot.name}'s turn")
-            action = int(
-                input("\nSelect an action:\n1: Change weapon\n2: Attack\nEnter #: "))
-            if action == 1:
-                robot.select_weapon(self.weapons)
+            action = self.prompt_input(
+                "\nSelect an action:\n1: Change weapon\n2: Attack\nEnter #: ", self.number_between, 1, 2)
+            if int(action) == 1:
+                robot.weapon.is_equipped = False
+                robot.select_weapon(self.prompt_input, self.number_in, self.weapons)
             self.show_dino_opponent_options()
-            target = int(input('\nChoose target # : ')) - 1
-            dino = self.herd.dinosaurs[target]
+            target = self.prompt_input(
+                '\nChoose target # : ', self.number_between, 1, len(self.herd.dinosaurs))
+            dino = self.herd.dinosaurs[int(target) - 1]
             robot.attack_dinosaur(dino)
             if dino.hp <= 0:
                 self.herd.dinosaurs.remove(dino)
@@ -189,6 +197,19 @@ class Battlefield:
 
     def auto_valid(self, input):
         return True
+
+    def number_in(self, input, arr):
+        try:
+            int(input)
+        except:
+            print('Only numbers are accepted')
+            return False
+        if int(input) in arr:
+            return True
+        else:
+            print(f"Selection must be one of the following:")
+            for number in arr:
+                print(f"{number}")
 
     def number_between(self, input, a, b):
         try:

@@ -1,11 +1,9 @@
-import weapon
-
 
 class Robot:
-    def __init__(self, name):
+    def __init__(self, name, item):
         self.name = name
         self.hp = 100
-        self.weapon = weapon.Weapon("Fists", 5)
+        self.weapon = item
 
     def attack_dinosaur(self, dinosaur):
         dinosaur.hp = dinosaur.hp - int(self.weapon.attack_power)
@@ -13,14 +11,16 @@ class Robot:
         if (dinosaur.hp <= 0):
             print(f"\n{dinosaur.name} has been killed!")
 
-    def select_weapon(self, weapons: list):
-        i = 1
+    def select_weapon(self, prompt, callback, weapons: list):
         print("\nAvailable Weapons:")
+        i = 1
+        arr = []
         for weapon in weapons:
             if weapon.is_equipped == False:
+                arr.append(i)
                 print(f"{i}: {weapon.name}")
             i += 1
-        selected_weapon = int(input("Select a weapon #: ")) - 1
-        self.weapon = weapons[selected_weapon]
+        selected_weapon = prompt("Select a weapon #: ", callback, arr)
+        self.weapon = weapons[int(selected_weapon) - 1]
         self.weapon.is_equipped = True
         print(f"\n{self.weapon.name} selected")
