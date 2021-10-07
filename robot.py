@@ -3,6 +3,7 @@ class Robot:
     def __init__(self, name, item):
         self.name = name
         self.hp = 100
+        self.energy = 100
         self.weapon = item
 
     def attack_dinosaur(self, dinosaur):
@@ -10,6 +11,7 @@ class Robot:
         print(f"\n{self.name} attacked {dinosaur.name} with {self.weapon.name} for {self.weapon.attack_power} damage!\n{dinosaur.name}'s HP is now {dinosaur.hp}")
         if (dinosaur.hp <= 0):
             print(f"\n{dinosaur.name} has been killed!")
+        self.energy = self.energy - self.weapon.cost
 
     def select_weapon(self, prompt, callback, weapons: list):
         print("\nAvailable Weapons:")

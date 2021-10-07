@@ -1,7 +1,9 @@
+import random
 class Dinosaur:
     def __init__(self, name, attack_power: int):
         self.name = name
         self.hp = 100
+        self.stamina = 100
         self.attack_power = attack_power
         self.attacks = ("Slash", "Bite", "Stomp")
         self.attack = ''
@@ -12,11 +14,8 @@ class Dinosaur:
         print(f"\n{self.name} attacked {robot.name} with {self.attack} for {self.attack_power} damage!\n{robot.name}'s HP is now {robot.hp}")
         if (robot.hp <= 0):
             print(f"\n{robot.name} has been destroyed!")
+        self.stamina = self.stamina - 10
 
     def select_attack(self) -> str:
-        print("\nSelect an attack: ")
-        i = 1
-        for attack in self.attacks:
-            print(f"{i}: {attack}")
-            i += 1
-        self.attack = self.attacks[int(input("\nEnter # : ")) - 1]
+        i = random.randrange(len(self.attacks))
+        self.attack = self.attacks[i]
