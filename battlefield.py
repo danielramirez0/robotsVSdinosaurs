@@ -12,6 +12,7 @@ class Battlefield:
         self.herd = herd.Herd()
         self.clear = lambda: os.system('clear')
         self.useAI = bool
+        self.players = ['P1', 'P2']
         self.p1_team = str
         self.p2_team = str
         self.weapons = []
@@ -28,7 +29,7 @@ class Battlefield:
 
         gaming = True
         while(gaming == True):
-            self.battle()
+            self.take_turns()
             if (len(self.herd.dinosaurs) == 0):
                 self.display_winners('Robots')
                 gaming = False
@@ -91,6 +92,39 @@ class Battlefield:
             self.dino_turn(dino)
         for robo in self.fleet.robots:
             self.robot_turn(robo)
+
+    def select_attacker(self, team):
+        print("Select attacker:")
+        i = 0
+        for attacker in team:
+            print(f"{i+1}: {attacker.name}")
+        chosen = self.prompt_input("# ", self.number_between, 1, len(team))
+        return team[int(chosen) - 1]
+
+    def take_turns(self):
+        self.clear()
+        for player in self.players:
+            if player == "P2" and self.useAI == True:
+                self.computer_turn()
+            else:
+                self.player_turn(player)
+
+    def player_turn(self, player):
+        print(f"It's {player}'s turn")
+        team = self.fleet.robots if self.get_team(player) == "Robots" else self.herd.dinosaurs
+        attacker = self.select_attacker(team)
+        print(f"{attacker.name}")
+        input()
+
+    def computer_turn(self):
+            print("It's the computer's turn")
+
+
+    def get_team(self, player):
+        if player == "P1":
+            return self.p1_team
+        else:
+            return self.p2_team
 
     def dino_turn(self, dinosaur):
         self.clear()
