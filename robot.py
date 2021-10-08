@@ -1,4 +1,7 @@
 
+import random
+
+
 class Robot:
     def __init__(self, name, item):
         self.name = name
@@ -8,21 +11,25 @@ class Robot:
 
     def attack_dinosaur(self, dinosaur):
         dinosaur.hp = dinosaur.hp - int(self.weapon.attack_power)
-        print(f"\n{self.name} attacked {dinosaur.name} with {self.weapon.name} for {self.weapon.attack_power} damage!\n{dinosaur.name}'s HP is now {dinosaur.hp}")
+        print(f"\n{self.name} attacked {dinosaur.name} with {self.weapon.name} for {self.weapon.attack_power} damage!\n\n{dinosaur.name}'s HP is now {dinosaur.hp}")
         if (dinosaur.hp <= 0):
             print(f"\n{dinosaur.name} has been killed!")
         self.energy = self.energy - self.weapon.cost
 
-    def select_weapon(self, prompt, callback, weapons: list):
+    def select_weapon(self, prompt, callback, weapons: list, use_ai = False):
         print("\nAvailable Weapons:")
         i = 1
         arr = []
         for weapon in weapons:
             if weapon.is_equipped == False:
                 arr.append(i)
-                print(f"{i}: {weapon.name}")
+                print(f"{i}: {weapon.name}\t|\tPower: {weapon.attack_power}\t|\tEnergy Cost: {weapon.cost}")
             i += 1
-        selected_weapon = prompt("Select a weapon #: ", callback, arr)
-        self.weapon = weapons[int(selected_weapon) - 1]
+        if use_ai == False:
+            selected_weapon = prompt("\n#: ", callback, arr)
+            self.weapon = weapons[int(selected_weapon) - 1]
+        else:
+            random_weapon = random.choice(weapons)
+            self.weapon = random_weapon
         self.weapon.is_equipped = True
         print(f"\n{self.weapon.name} selected")
