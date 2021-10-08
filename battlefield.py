@@ -126,8 +126,7 @@ class Battlefield:
     def ai_select_attacker(self, team):
         cant_attack = True
         while cant_attack:
-            n = random.randrange(len(team))
-            chosen_one = team[int(n)]
+            chosen_one = random.choice(team)
             if self.endurance_check(team, chosen_one) == True:
                 cant_attack = False
             else:
@@ -149,11 +148,23 @@ class Battlefield:
         print(f"\nIt's {player}'s turn\n")
         team = self.fleet.robots if self.get_team(
             player) == "Robots" else self.herd.dinosaurs
-        attacker = self.select_attacker(team)
-        if self.get_team(player) == "Robots":
-            self.robot_turn(attacker)
+        available_attackers = 0
+        for member in team:
+            if hasattr(member, 'energy'):
+                if member.energy > 0:
+                    available_attackers += 1
+            else:
+                if member.stamina > 0:
+                    available_attackers +=1
+        if available_attackers > 0:
+            attacker = self.select_attacker(team)
+            if self.get_team(player) == "Robots":
+                self.robot_turn(attacker)
+            else:
+                self.dino_turn(attacker)
         else:
-            self.dino_turn(attacker)
+            print("There are no available attackers!")
+            input("\nContinue...")
 
     def computer_turn(self, player):
         self.clear()
@@ -191,8 +202,7 @@ class Battlefield:
                 if robo.hp <= 0:
                     self.fleet.robots.remove(robo)
             else:
-                robo = self.fleet.robots[random.randrange(
-                    len(self.fleet.robots))]
+                robo = random.choice(self.fleet.robots)
                 dinosaur.attack_robot(robo)
                 if robo.hp <= 0:
                     self.fleet.robots.remove(robo)
@@ -213,7 +223,7 @@ class Battlefield:
                     robot.select_weapon(self.prompt_input,
                                         self.number_in, self.weapons)
             else:
-                action = random.randrange(2) + 1
+                action = random.choice([1,2])
                 if action == 1:
                     print(f"{robot.name} is changing weapons!")
                     robot.select_weapon(
@@ -230,8 +240,7 @@ class Battlefield:
                 if dino.hp <= 0:
                     self.herd.dinosaurs.remove(dino)
             else:
-                dino = self.herd.dinosaurs[random.randrange(
-                    len(self.herd.dinosaurs))]
+                dino = random.choice(self.herd.dinosaurs)
                 robot.attack_dinosaur(dino)
                 if dino.hp <= 0:
                     self.herd.dinosaurs.remove(dino)
