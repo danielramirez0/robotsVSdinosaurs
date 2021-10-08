@@ -1,4 +1,4 @@
-import random
+from random import randrange
 class Dinosaur:
     def __init__(self, name, attack_power: int):
         self.name = name
@@ -17,5 +17,8 @@ class Dinosaur:
         self.stamina = self.stamina - 10
 
     def select_attack(self) -> str:
-        i = random.randrange(len(self.attacks))
+        i = randrange(len(self.attacks))
         self.attack = self.attacks[i]
+
+    def __str__(self) -> str:
+        return f"{self.name}\t|\tHP: {self.hp}\t|\tStamina: {self.stamina}\t|\tAttack Power: {self.attack_power}"

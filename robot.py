@@ -1,5 +1,5 @@
 
-import random
+from random import choice
 
 
 class Robot:
@@ -29,7 +29,10 @@ class Robot:
             selected_weapon = prompt("\n#: ", callback, arr)
             self.weapon = weapons[int(selected_weapon) - 1]
         else:
-            random_weapon = random.choice(weapons)
+            random_weapon = choice(weapons)
             self.weapon = random_weapon
         self.weapon.is_equipped = True
         print(f"\n{self.weapon.name} selected")
+    
+    def __str__(self) -> str:
+        return f"{self.name}\t|\tHP: {self.hp}\t|\tEnergy Consumption: {self.weapon.cost}\t|\tWeeapon: {self.weapon.name}\t|\tPower: {self.weapon.attack_power}"

@@ -3,15 +3,15 @@ import herd
 import robot
 import dinosaur
 import weapon
-import os
-import random
+from os import system
+from random import choice
 
 
 class Battlefield:
     def __init__(self):
         self.fleet = fleet.Fleet()
         self.herd = herd.Herd()
-        self.clear = lambda: os.system('clear')
+        self.clear = lambda: system('clear')
         self.useAI = bool
         self.players = ['P1', 'P2']
         self.p1_team = str
@@ -51,7 +51,7 @@ class Battlefield:
 
         t_rex = dinosaur.Dinosaur("T-Rex", 80)
         raptor = dinosaur.Dinosaur("Raptor", 50)
-        triceratops = dinosaur.Dinosaur("Triceratops", 40)
+        triceratops = dinosaur.Dinosaur("Barney", 20)
 
         self.fleet.create_fleet([t_1000, t_800, t_101])
         self.herd.create_herd([t_rex, raptor, triceratops])
@@ -101,15 +101,7 @@ class Battlefield:
         while cant_attack:
             i = 0
             for attacker in team:
-                stat_endurance = "Energy" if hasattr(
-                    team[0], 'energy') else "Stamina"
-                stat_endurance_value = attacker.energy if hasattr(
-                    team[0], 'energy') else attacker.stamina
-                stat_power = attacker.weapon.attack_power if hasattr(
-                    team[0], 'weapon') else attacker.attack_power
-                stat_weapon = attacker.weapon.name if hasattr(
-                    team[0], 'weapon') else 'Self'
-                print(f"{i+1}: {attacker.name}\t|\t{stat_endurance}: {stat_endurance_value}\t|\tHP: {attacker.hp}\t|\tAttack Power: {stat_power} from {stat_weapon}")
+                print(f"{i+1}: {attacker}")
                 i += 1
             n = self.prompt_input("\n#: ", self.number_between, 1, len(team))
             chosen_one = team[int(n) - 1]
@@ -126,7 +118,7 @@ class Battlefield:
     def ai_select_attacker(self, team):
         cant_attack = True
         while cant_attack:
-            chosen_one = random.choice(team)
+            chosen_one = choice(team)
             if self.endurance_check(team, chosen_one) == True:
                 cant_attack = False
             else:
@@ -155,7 +147,7 @@ class Battlefield:
                     available_attackers += 1
             else:
                 if member.stamina > 0:
-                    available_attackers +=1
+                    available_attackers += 1
         if available_attackers > 0:
             attacker = self.select_attacker(team)
             if self.get_team(player) == "Robots":
@@ -191,8 +183,7 @@ class Battlefield:
     def dino_turn(self, dinosaur, use_ai=False):
         self.clear()
         if len(self.fleet.robots) > 0:
-            print(
-                f"\nAttacker: {dinosaur.name} | Stamina: {dinosaur.stamina} | Attack Power: {dinosaur.attack_power}")
+            print(f"\n{dinosaur}")
             if use_ai == False:
                 self.show_robo_opponent_options()
                 target = self.prompt_input(
@@ -202,7 +193,7 @@ class Battlefield:
                 if robo.hp <= 0:
                     self.fleet.robots.remove(robo)
             else:
-                robo = random.choice(self.fleet.robots)
+                robo = choice(self.fleet.robots)
                 dinosaur.attack_robot(robo)
                 if robo.hp <= 0:
                     self.fleet.robots.remove(robo)
@@ -212,10 +203,8 @@ class Battlefield:
         self.clear()
         if len(self.herd.dinosaurs) > 0:
             if use_ai == False:
-                print(
-                    f"\nSelect {robot.name}'s action (Energy: {robot.energy} HP: {robot.hp})")
-                print(
-                    f"\nCurrently equipped weapon: {robot.weapon.name} Power: {robot.weapon.attack_power} Energy Consumption: {robot.weapon.cost}")
+                print(f"\n{robot}")
+                print(f"\nSelect an action:")
                 action = self.prompt_input(
                     "\n1: Change weapon\n2: Attack\n\n#: ", self.number_between, 1, 2)
                 if int(action) == 1:
@@ -223,14 +212,11 @@ class Battlefield:
                     robot.select_weapon(self.prompt_input,
                                         self.number_in, self.weapons)
             else:
-                action = random.choice([1,2])
+                action = choice([1, 2])
                 if action == 1:
                     print(f"{robot.name} is changing weapons!")
                     robot.select_weapon(
                         'null', self.number_in, self.weapons, self.useAI)
-            print(
-                f"\nAttacker: {robot.name} | Stamina: {robot.energy} | Attack Power: {robot.weapon.attack_power}")
-
             if use_ai == False:
                 self.show_dino_opponent_options()
                 target = self.prompt_input(
@@ -240,7 +226,7 @@ class Battlefield:
                 if dino.hp <= 0:
                     self.herd.dinosaurs.remove(dino)
             else:
-                dino = random.choice(self.herd.dinosaurs)
+                dino = choice(self.herd.dinosaurs)
                 robot.attack_dinosaur(dino)
                 if dino.hp <= 0:
                     self.herd.dinosaurs.remove(dino)
@@ -250,14 +236,14 @@ class Battlefield:
         print("\nSelect an opponent to attack:\n")
         i = 1
         for dino in self.herd.dinosaurs:
-            print(f"{i}: {dino.name}\t|\tHP: {dino.hp}\t|\tStamina: {dino.stamina}")
+            print(f"{i}: {dino}")
             i += 1
 
     def show_robo_opponent_options(self):
         print("\nSelect an opponent to attack:\n")
         i = 1
         for robot in self.fleet.robots:
-            print(f"{i}: {robot.name}\t|\tHP: {robot.hp}\t|\tEnergy: {robot.energy}")
+            print(f"{i}: {robot}")
             i += 1
 
     def display_winners(self, winner):
