@@ -16,14 +16,15 @@ class Robot:
             print(f"\n{dinosaur.name} has been killed!")
         self.energy = self.energy - self.weapon.cost
 
-    def select_weapon(self, prompt, callback, weapons: list, use_ai = False):
+    def select_weapon(self, prompt, callback, weapons: list, use_ai=False):
         print("\nAvailable Weapons:")
         i = 1
         arr = []
         for weapon in weapons:
             if weapon.is_equipped == False:
                 arr.append(i)
-                print(f"{i}: {weapon.name}\t|\tPower: {weapon.attack_power}\t|\tEnergy Cost: {weapon.cost}")
+                print(
+                    f"{i}: {weapon.name}\t|\tPower: {weapon.attack_power}\t|\tEnergy Cost: {weapon.cost}")
             i += 1
         if use_ai == False:
             selected_weapon = prompt("\n#: ", callback, arr)
@@ -33,6 +34,6 @@ class Robot:
             self.weapon = random_weapon
         self.weapon.is_equipped = True
         print(f"\n{self.weapon.name} selected")
-    
+
     def __str__(self) -> str:
-        return f"{self.name}\t|\tHP: {self.hp}\t|\tEnergy Consumption: {self.weapon.cost}\t|\tWeeapon: {self.weapon.name}\t|\tPower: {self.weapon.attack_power}"
+        return f"{self.name}  |  HP: {self.hp}  |  Energy: {self.energy}  |  Weeapon: {self.weapon.name}  |  Energy Drain: {self.weapon.cost}  |  Power: {self.weapon.attack_power}"

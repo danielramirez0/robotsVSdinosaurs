@@ -51,7 +51,7 @@ class Battlefield:
 
         t_rex = dinosaur.Dinosaur("T-Rex", 80)
         raptor = dinosaur.Dinosaur("Raptor", 50)
-        triceratops = dinosaur.Dinosaur("Barney", 20)
+        triceratops = dinosaur.Dinosaur("Sarah", 40)
 
         self.fleet.create_fleet([t_1000, t_800, t_101])
         self.herd.create_herd([t_rex, raptor, triceratops])
@@ -230,6 +230,10 @@ class Battlefield:
                 robot.attack_dinosaur(dino)
                 if dino.hp <= 0:
                     self.herd.dinosaurs.remove(dino)
+            if robot.energy == 0:
+                robot.weapon.is_equipped = False
+                print(f"{robot.name} has run out of energy and has dropped its {robot.weapon.name}")
+                robot.weapon = self.weapons[3]
             input("\nContinue...")
 
     def show_dino_opponent_options(self):

@@ -21,4 +21,4 @@ class Dinosaur:
         self.attack = self.attacks[i]
 
     def __str__(self) -> str:
-        return f"{self.name}\t|\tHP: {self.hp}\t|\tStamina: {self.stamina}\t|\tAttack Power: {self.attack_power}"
+        return f"{self.name}  |  HP: {self.hp}  |  Stamina: {self.stamina}  |  Attack Power: {self.attack_power}"
