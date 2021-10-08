@@ -230,7 +230,7 @@ class Battlefield:
                 robot.attack_dinosaur(dino)
                 if dino.hp <= 0:
                     self.herd.dinosaurs.remove(dino)
-            if robot.energy == 0:
+            if robot.energy <= 0:
                 robot.weapon.is_equipped = False
                 print(f"{robot.name} has run out of energy and has dropped its {robot.weapon.name}")
                 robot.weapon = self.weapons[3]
