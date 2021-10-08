@@ -279,9 +279,6 @@ class Battlefield:
                 isValid = valid(response)
         return response
 
-    def auto_valid(self, input):
-        return True
-
     def number_in(self, input, arr):
         try:
             int(input)
@@ -305,6 +302,3 @@ class Battlefield:
             return True
         else:
             print(f"Selection must be between {a} and {b}")
-
-    def is_within_length_of(self, array_length):
-        return True

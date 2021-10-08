@@ -2,7 +2,7 @@
 
 Console application uses the concepts of OOP by creating classes and using objects (instances of those classes) to interact with each other
 
-## Classes
+## Classes and Features
 
 Includes a class for each of the following:
 
@@ -37,4 +37,9 @@ Robot can attack a Dinosaur and a Dinosaur can attack a Robot on a Battlefield
 
 Robot/Dinosaur lose health points (loss based on attack power) when another Robot/Dinosaur successfully attacks it
 
-Battle concludes once all the robots in the Fleet have their health points reach zero or all of the dinosaurs in the Herd have their health points reach zero
+Battle concludes once either team members' health or endurance reaches zero (all the robots in the Fleet have their health/energy points reach zero or all of the dinosaurs in the Herd have their health/stamina points reach zero)
+
+Includes two modes:
+
+- One player against AI
+- Two players against each other
